@@ -172,3 +172,24 @@ def test_construct_httpx_client_includes_extra_headers():
 
     assert client.headers["X-Custom"] == "test-value"
     assert client.headers["X-Tenant"] == "my-org"
+
+
+def test_construct_httpx_async_client_includes_extra_headers():
+    """Test that extra_headers are passed to async HTTPX client."""
+
+    class MyProvider(LLMProvider):
+        @property
+        def default_params(self):
+            return {}
+
+        def load(self):
+            return FakeChatModel()
+
+    provider_config = ProviderConfig()
+    provider_config.type = None
+    provider_config.extra_headers = {"X-Async-Header": "async-value"}
+
+    llm_provider = MyProvider("model", provider_config)
+    async_client = llm_provider._construct_httpx_client(False, True)
+
+    assert async_client.headers["X-Async-Header"] == "async-value"
