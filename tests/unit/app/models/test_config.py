@@ -4156,3 +4156,32 @@ def test_proxy_config_no_proxy_env_var_with_certificates(monkeypatch):
     assert proxy_config.no_proxy_hosts == no_proxy.split(",")
     assert str(proxy_config.proxy_ca_cert_path) == "tests/config/empty_cert.crt"
     assert str(proxy_config.proxy_url) == "http://proxy.example.com:1234"
+
+
+def test_provider_config_extra_headers_valid():
+    """Test extra_headers accepts valid dict."""
+    provider_config = ProviderConfig(
+        {
+            "name": "test_provider",
+            "type": "openai",
+            "credentials_path": None,
+            "models": [{"name": "test-model"}],
+            "extra_headers": {"X-Tenant-ID": "my-org", "X-Environment": "prod"},
+        },
+        ignore_llm_secrets=True,
+    )
+    assert provider_config.extra_headers == {"X-Tenant-ID": "my-org", "X-Environment": "prod"}
+
+
+def test_provider_config_extra_headers_default_empty():
+    """Test extra_headers defaults to empty dict when not specified."""
+    provider_config = ProviderConfig(
+        {
+            "name": "test_provider",
+            "type": "openai",
+            "credentials_path": None,
+            "models": [{"name": "test-model"}],
+        },
+        ignore_llm_secrets=True,
+    )
+    assert provider_config.extra_headers == {}

@@ -317,6 +317,7 @@ class ProviderConfig(BaseModel):
     fake_provider_config: Optional[FakeConfig] = None
     certificates_store: Optional[str] = None
     tls_security_profile: Optional[TLSSecurityProfile] = None
+    extra_headers: dict[str, str] = {}
 
     def __init__(
         self,
@@ -372,6 +373,7 @@ class ProviderConfig(BaseModel):
         self.tls_security_profile = TLSSecurityProfile(
             data.get("tlsSecurityProfile", None)
         )
+        self.extra_headers = data.get("extra_headers", {})
 
     def set_provider_type(self, data: dict) -> None:
         """Set the provider type."""
