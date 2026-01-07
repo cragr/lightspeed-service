@@ -4222,3 +4222,20 @@ def test_provider_config_extra_headers_rejects_empty_key():
             },
             ignore_llm_secrets=True,
         )
+
+
+def test_provider_config_extra_headers_rejects_non_string_key():
+    """Test extra_headers rejects non-string keys."""
+    with pytest.raises(
+        InvalidConfigurationError, match="extra_headers keys must be non-empty"
+    ):
+        ProviderConfig(
+            {
+                "name": "test_provider",
+                "type": "openai",
+                "credentials_path": None,
+                "models": [{"name": "test-model"}],
+                "extra_headers": {123: "value"},
+            },
+            ignore_llm_secrets=True,
+        )

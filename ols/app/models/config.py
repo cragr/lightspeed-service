@@ -379,7 +379,7 @@ class ProviderConfig(BaseModel):
     def _validate_extra_headers(self) -> None:
         """Validate extra_headers field."""
         for key, value in self.extra_headers.items():
-            if not key:
+            if not isinstance(key, str) or not key:
                 raise checks.InvalidConfigurationError(
                     "extra_headers keys must be non-empty strings"
                 )
