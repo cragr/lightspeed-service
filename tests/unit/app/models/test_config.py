@@ -4170,7 +4170,10 @@ def test_provider_config_extra_headers_valid():
         },
         ignore_llm_secrets=True,
     )
-    assert provider_config.extra_headers == {"X-Tenant-ID": "my-org", "X-Environment": "prod"}
+    assert provider_config.extra_headers == {
+        "X-Tenant-ID": "my-org",
+        "X-Environment": "prod",
+    }
 
 
 def test_provider_config_extra_headers_default_empty():
@@ -4189,7 +4192,9 @@ def test_provider_config_extra_headers_default_empty():
 
 def test_provider_config_extra_headers_rejects_non_string_value():
     """Test extra_headers rejects non-string values."""
-    with pytest.raises(InvalidConfigurationError, match="extra_headers values must be strings"):
+    with pytest.raises(
+        InvalidConfigurationError, match="extra_headers values must be strings"
+    ):
         ProviderConfig(
             {
                 "name": "test_provider",
@@ -4204,7 +4209,9 @@ def test_provider_config_extra_headers_rejects_non_string_value():
 
 def test_provider_config_extra_headers_rejects_empty_key():
     """Test extra_headers rejects empty string keys."""
-    with pytest.raises(InvalidConfigurationError, match="extra_headers keys must be non-empty"):
+    with pytest.raises(
+        InvalidConfigurationError, match="extra_headers keys must be non-empty"
+    ):
         ProviderConfig(
             {
                 "name": "test_provider",
